@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/poker_background"
+    tools:context="com.czopi.administrador.truco.GameActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!--> AI Cards </!-->
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/AIcard1"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/AIcard2"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/AIcard3"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:paddingLeft="2dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/cardPlayed1"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="24dp"
+                    android:id="@+id/cardPlayed2"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="48dp"
+                    android:id="@+id/cardPlayed3"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="72dp"
+                    android:id="@+id/cardPlayed4"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="96dp"
+                    android:id="@+id/cardPlayed5"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="120dp"
+                    android:id="@+id/cardPlayed6"/>
+            </FrameLayout>
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:layout_gravity="end"
+                android:layout_weight="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/quiero"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Quiero"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/noquiero"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="No quiero"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/envido"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Envido"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="visible"/>
+
+                    <Button
+                        android:id="@+id/realenvido"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Real envido"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="visible"/>
+
+                    <Button
+                        android:id="@+id/faltaenvido"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Falta envido"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="visible"/>
+
+                    <Button
+                        android:id="@+id/truco"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Truco"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="visible"/>
+
+                    <Button
+                        android:id="@+id/retruco"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Re truco"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/vale4"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Vale cuatro"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/almazo"
+                        android:onClick="button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:elevation="2dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14sp"
+                        android:text="Al mazo"
+                        android:textColor="@color/primary_text"
+                        android:gravity="center"
+                        android:background="@drawable/secondary_color_rounded_background"
+                        android:visibility="visible"/>
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!--> User Cards </!-->
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/card1"
+                android:onClick="cardClicked"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/card2"
+                android:onClick="cardClicked"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/card3"
+                android:onClick="cardClicked"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
