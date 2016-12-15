@@ -22,7 +22,7 @@ public class GameActivity extends AppCompatActivity {
     Hashtable<String, Integer> AICardsValues;
     int envidoUser, envidoAI, turn, round, AIScore, UserScore;
     String cardPlayedByUser;
-    Boolean toGo1, toGo2, trick, reTrick, worth4, mano, envidoDouble, envidoReal, envidoFalta;
+    Boolean toGo1, toGo2, trick, reTrick, worth4, mano, envidoCall, envidoDouble, envidoReal, envidoFalta;
     Card bestCard, middleCard, worstCard;
 
     int cardsPlayed = 0;
@@ -108,7 +108,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void cardDealer () {
+    public void cardDealer() {
         Collections.shuffle(cards);
         userHand = new ArrayList<>();
         int userCards = 0;
@@ -161,7 +161,7 @@ public class GameActivity extends AppCompatActivity {
         envidoAI = tantos(AIHand);
     }
 
-    public int tantos (ArrayList<Card> array) {
+    public int tantos(ArrayList<Card> array) {
         int tantos;
         int e = 0;
         int espadasCounter = 0;
@@ -241,7 +241,7 @@ public class GameActivity extends AppCompatActivity {
         return tantos;
     }
 
-    public void cardClicked (View view) {
+    public void cardClicked(View view) {
         cardPlayedByUser = view.getTag().toString();
         for (Iterator<Card> iterator = userHand.iterator(); iterator.hasNext();) {
             Card card = iterator.next();
@@ -303,6 +303,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void AITurn() {
         if (AIEnvidoDesires()) {
+            envidoCall = true;
             envido();
         }
         toGo2 = true;
@@ -311,7 +312,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public boolean AIEnvidoDesires () {
+    public boolean AIEnvidoDesires() {
         boolean wants = false;
         if (envidoAI > 27) {
             wants = true;
@@ -363,7 +364,12 @@ public class GameActivity extends AppCompatActivity {
         }
         if (wants) {
             if (AIEnvidoDoubleOrEnvidoRealDesires()) {
-                envidoDouble(); //TODO EnvidoReal();
+                int x = (int) (Math.random()*5);
+                if (x <= 1) {
+                    envidoDouble();
+                } else {
+                    envidoReal();
+                }
             }
         }
         return wants;
@@ -371,21 +377,38 @@ public class GameActivity extends AppCompatActivity {
 
     public boolean AIEnvidoDoubleOrEnvidoRealDesires() {
         boolean wants = false;
+        int x;
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         if ("Button".equals(stackTraceElements[1].getMethodName())) {
             if (envidoAI > 31) {
-                envidoDouble = true;
                 wants = true;
             } else if (envidoAI > 26) {
-                int x = (int) (Math.random() * 3);
+                x = (int) (Math.random() * 3);
                 if (x == 0) {
-                    envidoDouble = true;
                     wants = true;
                 }
             } else {
-                int x = (int) (Math.random() * 10);
+                x = (int) (Math.random() * 10);
                 if (x == 0) {
-                    envidoDouble = true;
+                    wants = true;
+                }
+            }
+        }
+        return wants;
+    }
+
+    public boolean AIEnvidoFaltaDesires() {
+        boolean wants = false;
+        int x;
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        if ("Button".equals(stackTraceElements[1].getMethodName())) {
+            if (envidoAI > 32) {
+                envidoFalta = true;
+                wants = true;
+            } else if (envidoAI >= 31) {
+                x = (int) (Math.random()*3);
+                if (x == 0) {
+                    envidoFalta = true;
                     wants = true;
                 }
             }
@@ -409,7 +432,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void checkForWinner () {
+    public void checkForWinner() { //TODO Apply it where necessary
         String winner;
         if (UserScore >= 30) {
             winner = "User";
@@ -419,63 +442,121 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void checkForWinnerOfEnvido () {
-        int x = 0;
+    public void checkForWinnerOfEnvido() {
+        int x = 2;
         if (envidoFalta) {
             //TODO Set the value of X according to Falta Envido's rules.
         } else {
-            if (envidoDouble) {
-                x+=2;
-            }
             if (envidoReal) {
                 x+=3;
             }
-            if (envidoAI > envidoUser) {
-                AIScore += x;
-            } else if (envidoAI < envidoUser) {
+            if (envidoDouble) {
+                x+=2;
+            }
+        }
+        if (envidoAI > envidoUser) {
+            AIScore += x;
+        } else if (envidoAI < envidoUser) {
+            UserScore += x;
+        } else if (envidoAI == envidoUser) {
+            if (mano) {
                 UserScore += x;
-            } else if (envidoAI == envidoUser) {
-                if (mano) {
-                    UserScore += x;
-                } else {
-                    AIScore += 2;
-                }
+            } else {
+                AIScore += x;
             }
         }
         envidoFalta = false;
         envidoReal = false;
+        envidoDouble = false;
+        envidoCall = false;
 
     }
 
-    public void Button (View view) {
+    public void awardPointsDueToEnvidoLoser() { //FIXME Wrong logic
+        int x = 0;
+        if (envidoFalta) {
+            x+= 1;
+        }
+        if (envidoReal) {
+            x+= 1;
+        }
+        if (envidoDouble) {
+            x+= 1;
+        }
+
+        envidoFalta = false;
+        envidoReal = false;
+        envidoDouble = false;
+        envidoCall = false;
+    }
+
+    public void button(View view) {
         switch (view.getId()) {
             case R.id.envido:
+                if (envidoCall) {
+                    envidoDouble = true;
+                } else {
+                    envidoCall = true;
+                }
                 if (AIEnvidoDesires()) {
                     checkForWinnerOfEnvido();
                 } else {
-                    UserScore+=1;
+                    awardPointsDueToEnvidoLoser();
                 }
                 break;
-
-
+            case R.id.realenvido:
+                envidoReal = true;
+                if (AIEnvidoDoubleOrEnvidoRealDesires()) {
+                    checkForWinnerOfEnvido();
+                } else {
+                    awardPointsDueToEnvidoLoser();
+                }
+                break;
+            case R.id.faltaenvido:
+                envidoFalta = true;
+                if (AIEnvidoFaltaDesires()) {
+                    checkForWinnerOfEnvido();
+                } else {
+                    awardPointsDueToEnvidoLoser();
+                }
+                break;
+            case R.id.quiero:
+                if (envidoCall) {
+                    checkForWinnerOfEnvido();
+                }
+                //TODO Fill with other possibilities.
+                break;
+            case R.id.noquiero:
+                if (envidoCall) {
+                    awardPointsDueToEnvidoLoser();
+                }
+                //TODO Fill with other possibilities.
         }
     }
 
-    public void envidoDouble () {
-        //TODO Cuando el AI responde Envido a Envido.
-        //TODO CheckfForEnvidoAIDoubleDesires
-        /*
-        if (quiero) {
-            if(CheckForEnvidoAiDoubleDesires()) {
-
-            }
-        }
-
-         */
+    public void envidoReal() {
+        envidoReal = true;
+        quiero.setVisibility(View.VISIBLE);
+        noquiero.setVisibility(View.VISIBLE);
+        faltaenvido.setVisibility(View.VISIBLE);
     }
 
-    public void envido () {
-        //TODO Cuando el AI empieza un Envido.
+    public void envidoDouble() {
+        envidoDouble = true;
+        quiero.setVisibility(View.VISIBLE);
+        noquiero.setVisibility(View.VISIBLE);
+        realenvido.setVisibility(View.VISIBLE);
+        faltaenvido.setVisibility(View.VISIBLE);
+    }
+
+    public void envido() {
+        envidoCall = true;
+        quiero.setVisibility(View.VISIBLE);
+        noquiero.setVisibility(View.VISIBLE);
+        envido.setVisibility(View.VISIBLE);
+        realenvido.setVisibility(View.VISIBLE);
+        faltaenvido.setVisibility(View.VISIBLE);
+
     }
 
 }
